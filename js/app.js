@@ -12,7 +12,8 @@
   const state = {
     currentView: 'home',      // 'home', 'catalog', 'checkout', 'account'
     category: 'all',          // 'all', 'anime', 'figuras', 'juegos-mesa', 'juegos-cartas', 'coleccionables', 'accesorios', 'ofertas'
-    homeCategory: 'all',      // For instant home page product filtering
+    homeCategory: 'juegos',   // Games first; anime has its own section below.
+    playerCount: 'all',
     franchise: 'all',
     searchQuery: '',
     priceMin: 0,
@@ -27,6 +28,7 @@
 
   // DOM Cache
   const DOM = {};
+  let menuInertElements = [];
 
   function cacheDOM() {
     // Navigation
@@ -35,6 +37,12 @@
     DOM.mobileNavDrawer = document.getElementById('mobileNavDrawer');
     DOM.mobileNavClose = document.getElementById('mobileNavClose');
     DOM.mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    DOM.homeIntro = document.getElementById('homeIntro');
+    DOM.storeSearchForm = document.getElementById('storeSearchForm');
+    DOM.storeSearchInput = document.getElementById('storeSearchInput');
+    DOM.storeSearchClear = document.getElementById('storeSearchClear');
+    DOM.playerCountSelect = document.getElementById('playerCountFilter');
+    DOM.animeProductsGrid = document.getElementById('animeProductsGrid');
 
     // Top utility buttons
     DOM.searchToggleBtns = document.querySelectorAll('.search-toggle-btn');
@@ -174,7 +182,7 @@
     cacheDOM();
     setupUrlRouting();
     initHeroCarousel();
-    renderHomeMainProducts('all');
+    renderHomeMainProducts('juegos');
     renderCategoriesGrid();
     renderHomeSections();
     populateFranchiseFilter();
@@ -185,6 +193,7 @@
     updateCartUI();
     updateFavoritesUI();
     renderOrdersList();
+    syncSearchInputs();
   }
 
   /* ================= HERO CAROUSEL ENGINE ================= */
@@ -321,8 +330,13 @@
   }
 
   /* View Switcher */
-  function showView(viewName) {
+  function showView(viewName, scroll = true) {
     state.currentView = viewName;
+    if (viewName === 'home') {
+      state.searchQuery = '';
+      syncSearchInputs();
+    }
+    if (DOM.homeIntro) DOM.homeIntro.hidden = viewName !== 'home';
 
     if (DOM.homeView) DOM.homeView.style.display = viewName === 'home' ? 'block' : 'none';
     if (DOM.catalogView) DOM.catalogView.style.display = viewName === 'catalog' ? 'block' : 'none';
@@ -348,16 +362,69 @@
       renderCheckoutSummary();
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scroll) window.scrollTo({ top: 0, behavior: motionBehavior() });
+  }
+
+  function motionBehavior() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+  }
+
+  function isGame(product) {
+    return ['juegos-mesa', 'juegos-cartas'].includes(product.category);
+  }
+
+  function playerRange(product) {
+    const numbers = (product.specs?.Jugadores || '').match(/\d+/g);
+    return numbers ? [Number(numbers[0]), Number(numbers[1] || numbers[0])] : null;
+  }
+
+  function normalizeSearch(value) {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
+
+  function syncSearchInputs() {
+    [DOM.searchInput, DOM.storeSearchInput].forEach(input => {
+      if (input && input.value.trim() !== state.searchQuery) input.value = state.searchQuery;
+    });
+    if (DOM.storeSearchClear) DOM.storeSearchClear.hidden = !state.searchQuery;
+    if (DOM.clearSearchBtn) DOM.clearSearchBtn.style.display = state.searchQuery ? 'block' : 'none';
+  }
+
+  function searchStore() {
+    const query = DOM.storeSearchInput.value.trim();
+    if (state.currentView !== 'catalog') clearAllFilters();
+    state.searchQuery = query;
+    syncSearchInputs();
+    showView('catalog', false);
+    renderCatalog();
+  }
+
+  function browsePlayers(count) {
+    clearAllFilters();
+    state.playerCount = count;
+    DOM.playerCountSelect.value = count;
+    setCatalogCategory('juegos');
+  }
+
+  function goToHomeSection(id) {
+    showView('home', false);
+    if (id === 'productosInicioSection') renderHomeMainProducts('juegos');
+    document.getElementById(id)?.scrollIntoView({ behavior: motionBehavior() });
   }
 
   /* ================= HOME PAGE: DIRECT PRODUCTS SHOWCASE ================= */
-  function renderHomeMainProducts(category = 'all') {
+  function renderHomeMainProducts(category = 'juegos') {
     state.homeCategory = category;
     if (!DOM.homeMainProductsGrid) return;
 
     let filtered = PRODUCTS_DATA;
-    if (category === 'ofertas') {
+    if (category === 'juegos') {
+      filtered = PRODUCTS_DATA.filter(isGame);
+    } else if (category === 'ofertas') {
       filtered = PRODUCTS_DATA.filter(p => p.oldPrice && p.oldPrice > p.price);
     } else if (category !== 'all') {
       filtered = PRODUCTS_DATA.filter(p => p.category === category);
@@ -371,16 +438,22 @@
       const tabs = DOM.homeCategoryTabs.querySelectorAll('.home-tab-pill');
       tabs.forEach(tab => {
         tab.classList.toggle('active', tab.dataset.category === category);
+        tab.setAttribute('aria-pressed', String(tab.dataset.category === category));
       });
     }
   }
 
   function setHomeCategoryFilter(category) {
+    if (!['juegos', 'juegos-mesa', 'juegos-cartas'].includes(category)) {
+      clearAllFilters();
+      setCatalogCategory(category);
+      return;
+    }
     showView('home');
     renderHomeMainProducts(category);
     const targetSection = document.getElementById('productosInicioSection');
     if (targetSection) {
-      targetSection.scrollIntoView({ behavior: 'smooth' });
+      targetSection.scrollIntoView({ behavior: motionBehavior() });
     }
   }
 
@@ -414,6 +487,11 @@
   }
 
   function renderHomeSections() {
+    if (DOM.animeProductsGrid) {
+      const anime = PRODUCTS_DATA.filter(p => ['anime', 'figuras', 'coleccionables'].includes(p.category));
+      DOM.animeProductsGrid.innerHTML = anime.map(createProductCardHTML).join('');
+      attachProductCardEvents(DOM.animeProductsGrid);
+    }
     // 1. Featured Products (Destacados)
     if (DOM.featuredProductsGrid) {
       const featured = PRODUCTS_DATA.filter(p => p.isFeatured);
@@ -442,22 +520,8 @@
     const hasDiscount = p.oldPrice && p.oldPrice > p.price;
     const discountPercent = hasDiscount ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
 
-    // Rating stars generator
-    const fullStars = Math.floor(p.rating);
-    const hasHalfStar = p.rating % 1 >= 0.5;
-    let starsHtml = '';
-    for (let i = 0; i < 5; i++) {
-      if (i < fullStars) {
-        starsHtml += '<i class="fas fa-star"></i>';
-      } else if (i === fullStars && hasHalfStar) {
-        starsHtml += '<i class="fas fa-star-half-alt"></i>';
-      } else {
-        starsHtml += '<i class="far fa-star"></i>';
-      }
-    }
-
     return `
-      <article class="product-card" data-id="${p.id}">
+      <article class="product-card ${isGame(p) ? 'game-card' : ''}" data-id="${p.id}">
         <div class="product-card-media">
           <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='img/hero-banner.jpg'">
           
@@ -486,11 +550,10 @@
             <a href="javascript:void(0)" class="product-title-link" data-id="${p.id}">${p.name}</a>
           </h3>
 
-          <div class="product-card-rating">
-            <span class="stars-wrap">${starsHtml}</span>
-            <span class="rating-value">${p.rating.toFixed(1)}</span>
-            <span class="rating-count">(${p.reviewsCount || 12})</span>
-          </div>
+          ${isGame(p) ? `<div class="game-facts">
+            ${playerRange(p) ? `<span><i class="fas fa-user-friends" aria-hidden="true"></i> ${playerRange(p).join('–')} jugadores</span>` : '<span>Cartas coleccionables</span>'}
+            ${p.specs?.['Duración'] ? `<span><i class="far fa-clock" aria-hidden="true"></i> ${p.specs['Duración'].replace('minutos', 'min')}</span>` : ''}
+          </div>` : ''}
 
           <div class="product-card-bottom">
             <div class="product-price-box">
@@ -562,6 +625,7 @@
 
     const pills = [
       { id: 'all', name: 'Todos los productos', icon: 'fa-border-all' },
+      { id: 'juegos', name: 'Todos los juegos', icon: 'fa-dice' },
       ...CATEGORIES_DATA.map(c => ({ id: c.id, name: c.name, icon: c.icon })),
       { id: 'ofertas', name: 'Ofertas y Descuentos', icon: 'fa-tags' }
     ];
@@ -590,6 +654,10 @@
 
   function setCatalogCategory(catId) {
     state.category = catId;
+    if (!['juegos', 'juegos-mesa', 'juegos-cartas'].includes(catId)) {
+      state.playerCount = 'all';
+      if (DOM.playerCountSelect) DOM.playerCountSelect.value = 'all';
+    }
     renderCatalogCategoryPills();
     showView('catalog');
     renderCatalog();
@@ -600,8 +668,16 @@
       // 1. Category Filter
       if (state.category === 'ofertas') {
         if (!p.oldPrice || p.oldPrice <= p.price) return false;
+      } else if (state.category === 'juegos') {
+        if (!isGame(p)) return false;
       } else if (state.category !== 'all' && p.category !== state.category) {
         return false;
+      }
+
+      if (state.playerCount !== 'all') {
+        const range = playerRange(p);
+        const count = Number(state.playerCount);
+        if (!isGame(p) || !range || count < range[0] || count > range[1]) return false;
       }
 
       // 2. Franchise Filter
@@ -611,9 +687,9 @@
 
       // 3. Search Query
       if (state.searchQuery) {
-        const query = state.searchQuery.toLowerCase();
-        const searchable = `${p.name} ${p.categoryName || ''} ${p.franchise || ''} ${p.manufacturer || ''} ${p.description || ''}`.toLowerCase();
-        if (!searchable.includes(query)) return false;
+        const words = normalizeSearch(state.searchQuery).split(/\s+/);
+        const searchable = normalizeSearch(`${p.name} ${p.categoryName || ''} ${p.franchise || ''} ${p.manufacturer || ''} ${p.description || ''}`);
+        if (!words.every(word => searchable.includes(word))) return false;
       }
 
       // 4. Price Max Filter
@@ -675,12 +751,16 @@
 
     if (state.category !== 'all') {
       const catObj = CATEGORIES_DATA.find(c => c.id === state.category);
-      const label = state.category === 'ofertas' ? 'Ofertas' : (catObj ? catObj.name : state.category);
+      const label = state.category === 'ofertas' ? 'Ofertas' : state.category === 'juegos' ? 'Todos los juegos' : (catObj ? catObj.name : state.category);
       tags.push({ key: 'category', label: `Categoría: ${label}` });
     }
 
     if (state.franchise !== 'all') {
       tags.push({ key: 'franchise', label: `Franquicia: ${state.franchise}` });
+    }
+
+    if (state.playerCount !== 'all') {
+      tags.push({ key: 'players', label: `Para ${state.playerCount} jugadores` });
     }
 
     if (state.searchQuery) {
@@ -705,7 +785,7 @@
       <div class="filter-pills-list">
         ${tags.map(t => `
           <span class="active-filter-pill">
-            ${t.label}
+            ${escapeHTML(t.label)}
             <button class="remove-filter-btn" data-filter-key="${t.key}" aria-label="Quitar filtro">&times;</button>
           </span>
         `).join('')}
@@ -717,6 +797,10 @@
       btn.addEventListener('click', () => {
         const key = btn.dataset.filterKey;
         if (key === 'category') state.category = 'all';
+        if (key === 'players') {
+          state.playerCount = 'all';
+          DOM.playerCountSelect.value = 'all';
+        }
         if (key === 'franchise') {
           state.franchise = 'all';
           if (DOM.franchiseSelect) DOM.franchiseSelect.value = 'all';
@@ -724,6 +808,7 @@
         if (key === 'search') {
           state.searchQuery = '';
           if (DOM.searchInput) DOM.searchInput.value = '';
+          syncSearchInputs();
         }
         if (key === 'price') {
           state.priceMax = 1500;
@@ -748,11 +833,14 @@
 
   function clearAllFilters() {
     state.category = 'all';
+    state.playerCount = 'all';
+    if (DOM.playerCountSelect) DOM.playerCountSelect.value = 'all';
     state.franchise = 'all';
     state.searchQuery = '';
     state.priceMax = 1500;
     state.availability = 'all';
     state.sortBy = 'relevance';
+    syncSearchInputs();
 
     if (DOM.searchInput) DOM.searchInput.value = '';
     if (DOM.clearSearchBtn) DOM.clearSearchBtn.style.display = 'none';
@@ -1368,15 +1456,15 @@ Gracias.`;
       `;
     } else {
       const results = PRODUCTS_DATA.filter(p => {
-        const text = `${p.name} ${p.categoryName || ''} ${p.franchise || ''} ${p.manufacturer || ''}`.toLowerCase();
-        return text.includes(cleanQuery);
+        const text = normalizeSearch(`${p.name} ${p.categoryName || ''} ${p.franchise || ''} ${p.manufacturer || ''}`);
+        return text.includes(normalizeSearch(cleanQuery));
       });
 
       if (results.length === 0) {
         DOM.searchModalResults.innerHTML = `
           <div class="search-no-results">
             <i class="fas fa-search"></i>
-            <p>No se encontraron productos para "<strong>${query}</strong>"</p>
+            <p>No se encontraron productos para "<strong>${escapeHTML(query)}</strong>"</p>
             <span>Intenta con otra palabra clave como Luffy, Catan, Goku, Pokémon o Jujutsu Kaisen.</span>
           </div>
         `;
@@ -1427,18 +1515,51 @@ Gracias.`;
 
         closeMobileNav();
 
-        if (cat) {
-          setHomeCategoryFilter(cat);
+        if (link.dataset.homeSection) {
+          goToHomeSection(link.dataset.homeSection);
+        } else if (link.dataset.playerCount) {
+          browsePlayers(link.dataset.playerCount);
+        } else if (cat) {
+          clearAllFilters();
+          setCatalogCategory(cat);
         } else if (view) {
           if (view === 'catalog') {
-            state.category = 'all';
-            renderCatalogCategoryPills();
-            renderCatalog();
+            clearAllFilters();
           }
           showView(view);
         }
       });
     });
+
+    document.querySelectorAll('.intro-link[data-home-section]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        goToHomeSection(link.dataset.homeSection);
+      });
+    });
+
+    if (DOM.storeSearchForm) {
+      DOM.storeSearchForm.addEventListener('submit', event => {
+        event.preventDefault();
+        searchStore();
+      });
+      DOM.storeSearchInput.addEventListener('input', searchStore);
+      DOM.storeSearchClear.addEventListener('click', () => {
+        DOM.storeSearchInput.value = '';
+        searchStore();
+        DOM.storeSearchInput.focus();
+      });
+    }
+    if (DOM.playerCountSelect) {
+      DOM.playerCountSelect.addEventListener('change', () => {
+        state.playerCount = DOM.playerCountSelect.value;
+        if (state.playerCount !== 'all' && !['juegos', 'juegos-mesa', 'juegos-cartas'].includes(state.category)) {
+          state.category = 'juegos';
+        }
+        renderCatalogCategoryPills();
+        renderCatalog();
+      });
+    }
 
     // Home Category Quick Tabs Filter
     if (DOM.homeCategoryTabs) {
@@ -1454,8 +1575,16 @@ Gracias.`;
     // Mobile Navigation Drawer Toggle
     if (DOM.mobileMenuToggle) {
       DOM.mobileMenuToggle.addEventListener('click', () => {
-        if (DOM.mobileNavDrawer) DOM.mobileNavDrawer.classList.add('open');
-        if (DOM.mobileNavOverlay) DOM.mobileNavOverlay.classList.add('active');
+        DOM.mobileNavDrawer.inert = false;
+        DOM.mobileNavDrawer.classList.add('open');
+        DOM.mobileNavDrawer.setAttribute('aria-hidden', 'false');
+        DOM.mobileNavOverlay.classList.add('active');
+        DOM.mobileMenuToggle.setAttribute('aria-expanded', 'true');
+        menuInertElements = Array.from(document.body.children).filter(el =>
+          el !== DOM.mobileNavDrawer && el !== DOM.mobileNavOverlay && !el.inert && el.tagName !== 'SCRIPT');
+        menuInertElements.forEach(el => { el.inert = true; });
+        document.body.style.overflow = 'hidden';
+        DOM.mobileNavClose.focus();
       });
     }
 
@@ -1593,7 +1722,8 @@ Gracias.`;
     // Catalog Search Input
     if (DOM.searchInput) {
       DOM.searchInput.addEventListener('input', (e) => {
-        state.searchQuery = e.target.value.trim().toLowerCase();
+        state.searchQuery = e.target.value.trim();
+        syncSearchInputs();
         if (DOM.clearSearchBtn) {
           DOM.clearSearchBtn.style.display = state.searchQuery ? 'block' : 'none';
         }
@@ -1605,6 +1735,7 @@ Gracias.`;
       DOM.clearSearchBtn.addEventListener('click', () => {
         DOM.searchInput.value = '';
         state.searchQuery = '';
+        syncSearchInputs();
         DOM.clearSearchBtn.style.display = 'none';
         renderCatalog();
         DOM.searchInput.focus();
@@ -1719,6 +1850,18 @@ Gracias.`;
 
     // Escape key listener
     document.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab' && DOM.mobileNavDrawer?.classList.contains('open')) {
+        const controls = Array.from(DOM.mobileNavDrawer.querySelectorAll('button, a[href]'));
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
       if (e.key === 'Escape') {
         closeProductDetailModal();
         closeCartDrawer();
@@ -1732,8 +1875,20 @@ Gracias.`;
   }
 
   function closeMobileNav() {
+    const wasOpen = DOM.mobileNavDrawer?.classList.contains('open');
     if (DOM.mobileNavDrawer) DOM.mobileNavDrawer.classList.remove('open');
     if (DOM.mobileNavOverlay) DOM.mobileNavOverlay.classList.remove('active');
+    if (DOM.mobileNavDrawer) {
+      DOM.mobileNavDrawer.inert = true;
+      DOM.mobileNavDrawer.setAttribute('aria-hidden', 'true');
+    }
+    if (DOM.mobileMenuToggle) DOM.mobileMenuToggle.setAttribute('aria-expanded', 'false');
+    if (wasOpen) {
+      menuInertElements.forEach(el => { el.inert = false; });
+      menuInertElements = [];
+      document.body.style.overflow = '';
+      DOM.mobileMenuToggle.focus();
+    }
   }
 
   /* ================= TOAST NOTIFICATIONS ================= */
@@ -1776,6 +1931,7 @@ Gracias.`;
     showView,
     setCatalogCategory,
     setHomeCategoryFilter,
+    clearAllFilters,
     openProductDetailModal,
     openCartDrawer,
     openFavoritesModal,

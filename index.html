@@ -32,55 +32,10 @@
 
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/storefront.css">
 </head>
 
 <body>
-
-  <!-- ================= TOP BAR INFORMATIVA ================= -->
-  <div class="top-bar">
-    <div class="container top-bar-inner">
-      <div class="top-bar-left">
-        <div class="top-bar-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>La Paz - Bolivia (Envíos a todo el país)</span>
-        </div>
-        <div class="top-bar-item">
-          <i class="fab fa-whatsapp"></i>
-          <span>Pedidos WhatsApp: <a href="https://wa.me/59177227645" target="_blank"
-              rel="noopener"><strong>77227645</strong></a></span>
-        </div>
-      </div>
-      <div class="top-bar-right">
-        <span class="top-bar-badge">
-          <i class="fas fa-shield-alt"></i> Productos 100% Originales Garantizados
-        </span>
-        <a href="https://instagram.com" target="_blank" rel="noopener" class="top-social-link" aria-label="Instagram"><i
-            class="fab fa-instagram"></i></a>
-        <a href="https://facebook.com" target="_blank" rel="noopener" class="top-social-link" aria-label="Facebook"><i
-            class="fab fa-facebook-f"></i></a>
-        <a href="https://tiktok.com" target="_blank" rel="noopener" class="top-social-link" aria-label="TikTok"><i
-            class="fab fa-tiktok"></i></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= BARRA SOCIAL FLOTANTE LATERAL ================= -->
-  <aside class="floating-social-bar" aria-label="Redes sociales">
-    <a href="https://facebook.com" target="_blank" rel="noopener" class="floating-social-link" aria-label="Facebook"
-      title="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://tiktok.com" target="_blank" rel="noopener" class="floating-social-link" aria-label="TikTok"
-      title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://instagram.com" target="_blank" rel="noopener" class="floating-social-link" aria-label="Instagram"
-      title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://wa.me/59177227645" target="_blank" rel="noopener" class="floating-social-link wa-link"
-      aria-label="WhatsApp 77227645" title="WhatsApp 77227645"><i class="fab fa-whatsapp"></i></a>
-  </aside>
-
-  <!-- ================= BOTÓN FLOTANTE DE WHATSAPP DIRECTO ================= -->
-  <a href="https://wa.me/59177227645" target="_blank" rel="noopener" class="floating-wa-btn"
-    aria-label="Escribir por WhatsApp a Sebitas Toys (77227645)" title="Pedir por WhatsApp (77227645)">
-    <i class="fab fa-whatsapp"></i>
-  </a>
 
   <!-- ================= NAVBAR & HEADER ================= -->
   <header class="main-header" id="mainHeader">
@@ -96,24 +51,13 @@
         </div>
       </a>
 
-      <!-- NAVEGACIÓN PRINCIPAL -->
       <nav class="main-nav" aria-label="Navegación principal">
-        <a href="javascript:void(0)" class="nav-link active" data-view="home">Inicio</a>
-        <a href="javascript:void(0)" class="nav-link" data-category="anime">Anime</a>
-        <a href="javascript:void(0)" class="nav-link" data-category="figuras">Figuras</a>
-        <a href="javascript:void(0)" class="nav-link" data-category="juegos-mesa">Juegos de mesa</a>
-        <a href="javascript:void(0)" class="nav-link" data-category="coleccionables">Coleccionables</a>
-        <a href="javascript:void(0)" class="nav-link nav-deal" data-category="ofertas"><i class="fas fa-tag"></i>
-          Ofertas</a>
+        <a href="#productosInicioSection" class="nav-link" data-home-section="productosInicioSection">Juegos</a>
+        <a href="#animeSection" class="nav-link" data-home-section="animeSection">Anime y coleccionables</a>
       </nav>
 
       <!-- ACCIONES DERECHA -->
       <div class="header-actions">
-        <!-- Buscar -->
-        <button class="action-btn search-toggle-btn" aria-label="Buscar productos" title="Buscar">
-          <i class="fas fa-search"></i>
-        </button>
-
         <!-- Favoritos -->
         <button class="action-btn favorites-toggle-btn" aria-label="Ver favoritos" title="Favoritos">
           <i class="far fa-heart"></i>
@@ -131,10 +75,7 @@
           <i class="far fa-user"></i>
         </button>
 
-        <!-- Menú Móvil Hamburguesa -->
-        <button class="action-btn mobile-menu-btn" id="mobileMenuToggle" aria-label="Abrir menú">
-          <i class="fas fa-bars"></i>
-        </button>
+
       </div>
 
     </div>
@@ -142,7 +83,7 @@
 
   <!-- ================= MOBILE NAVIGATION DRAWER ================= -->
   <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
-  <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Menú Móvil">
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Explorar productos" aria-hidden="true" inert>
     <div class="mobile-drawer-header">
       <div class="brand-logo">
         <img src="img/logo.png" alt="Sebitas Toys Logo" style="height: 38px; width: auto;">
@@ -154,25 +95,23 @@
       <button class="action-btn" id="mobileNavClose" aria-label="Cerrar menú"><i class="fas fa-times"></i></button>
     </div>
 
-    <nav class="mobile-drawer-links">
-      <a href="javascript:void(0)" class="mobile-nav-link active" data-view="home"><i class="fas fa-home"></i>
-        Inicio</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-view="catalog"><i class="fas fa-th-large"></i> Todo el
-        Catálogo</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="anime"><i class="fas fa-book-open"></i> Anime
-        & Manga</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="figuras"><i class="fas fa-cubes"></i> Figuras
-        Originales</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="juegos-mesa"><i class="fas fa-dice"></i>
-        Juegos de mesa</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="juegos-cartas"><i class="fas fa-clone"></i>
-        Juegos de cartas / TCG</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="coleccionables"><i class="fas fa-gem"></i>
-        Coleccionables</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="accesorios"><i class="fas fa-ring"></i>
-        Accesorios</a>
-      <a href="javascript:void(0)" class="mobile-nav-link" data-category="ofertas"
-        style="color: var(--color-accent); font-weight: 700;"><i class="fas fa-percent"></i> Ofertas Especiales</a>
+    <nav class="mobile-drawer-links" aria-label="Categorías y jugadores">
+      <a href="#productosInicioSection" class="mobile-nav-link" data-home-section="productosInicioSection"><i class="fas fa-home" aria-hidden="true"></i> Inicio · Juegos</a>
+      <span class="menu-group-title">Tipos de juegos</span>
+      <a href="?cat=juegos" class="mobile-nav-link" data-category="juegos"><i class="fas fa-dice" aria-hidden="true"></i> Todos los juegos</a>
+      <a href="?cat=juegos-mesa" class="mobile-nav-link" data-category="juegos-mesa">Juegos de mesa</a>
+      <a href="?cat=juegos-cartas" class="mobile-nav-link" data-category="juegos-cartas">Cartas y TCG</a>
+      <span class="menu-group-title">¿Cuántos van a jugar?</span>
+      <button class="mobile-nav-link" data-player-count="2">En pareja <span>2 jugadores</span></button>
+      <button class="mobile-nav-link" data-player-count="4">Grupo pequeño <span>4 jugadores</span></button>
+      <button class="mobile-nav-link" data-player-count="6">Grupo grande <span>6 jugadores</span></button>
+      <span class="menu-group-title">Anime y más</span>
+      <a href="?cat=anime" class="mobile-nav-link" data-category="anime">Anime y manga</a>
+      <a href="?cat=figuras" class="mobile-nav-link" data-category="figuras">Figuras</a>
+      <a href="?cat=coleccionables" class="mobile-nav-link" data-category="coleccionables">Coleccionables</a>
+      <a href="?cat=accesorios" class="mobile-nav-link" data-category="accesorios">Accesorios</a>
+      <a href="?cat=ofertas" class="mobile-nav-link" data-category="ofertas">Ofertas</a>
+      <a href="?view=catalog" class="mobile-nav-link" data-view="catalog">Todo el catálogo</a>
     </nav>
 
     <div class="mobile-drawer-footer">
@@ -182,300 +121,59 @@
     </div>
   </aside>
 
-  <!-- ================= VISTA PRINCIPAL: HOME ================= -->
+  <section class="store-intro container" id="homeIntro" aria-labelledby="introTitle">
+    <div class="intro-copy">
+      <span class="intro-eyebrow">SEBITAS TOYS · JUEGOS & COLECCIÓN</span>
+      <h1 id="introTitle">Una mesa.<br>Mil <span>aventuras.</span></h1>
+      <a href="#productosInicioSection" class="intro-link" data-home-section="productosInicioSection">Encuentra tu próximo juego <span aria-hidden="true">↘</span></a>
+    </div>
+    <div class="intro-art" aria-hidden="true">
+      <div class="intro-orbit"></div>
+      <div class="intro-game intro-game-one"><i class="fas fa-dice-six"></i><span>UNA MÁS.</span></div>
+      <div class="intro-game intro-game-two"><i class="fas fa-chess-knight"></i><span>TE TOCA.</span></div>
+      <span class="intro-star">✳</span>
+    </div>
+  </section>
+
+  <div class="discovery-bar" id="discoveryBar">
+    <div class="container discovery-inner">
+      <button class="browse-button" id="mobileMenuToggle" aria-label="Abrir menú de juegos y categorías" aria-controls="mobileNavDrawer" aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i><span>Explorar</span>
+      </button>
+      <form class="store-search" id="storeSearchForm" role="search">
+        <label class="sr-only" for="storeSearchInput">Buscar juegos, anime y productos</label>
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="search" id="storeSearchInput" placeholder="¿Qué quieres jugar? Busca Catan, UNO, Dixit…" autocomplete="off" enterkeyhint="search">
+        <button type="button" class="search-clear" id="storeSearchClear" aria-label="Borrar búsqueda" hidden>×</button>
+        <button type="submit" class="search-submit">Buscar</button>
+      </form>
+      <button class="action-btn cart-toggle-btn discovery-cart" aria-label="Ver carrito"><i class="fas fa-shopping-bag" aria-hidden="true"></i><span class="badge-count cart-count-badge">0</span></button>
+    </div>
+  </div>
+
   <main id="homeView">
-
-    <!-- ================= HERO CAROUSEL FULL WIDTH (PANTALLA COMPLETA) ================= -->
-    <section class="hero-carousel-section">
-      <div class="hero-carousel-wrapper" id="heroCarousel">
-
-        <!-- PISTA DE SLIDES -->
-        <div class="hero-carousel-track" id="heroCarouselTrack">
-
-          <!-- SLIDE 1: GENERAL / BIENVENIDA -->
-          <div class="hero-carousel-slide active" data-slide="0">
-            <img src="img/hero-banner.jpg" alt="Colección de Anime y Juegos de Mesa Sebitas Toys" class="hero-slide-bg">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-container">
-              <div class="hero-slide-content">
-                <span class="hero-pill-badge">
-                  <i class="fas fa-star"></i> Tienda Especializada para Coleccionistas
-                </span>
-                <h1 class="hero-title">
-                  Encuentra tu próxima <span>colección</span>
-                </h1>
-                <p class="hero-subtitle">
-                  Figuras de anime 100% originales importadas de Japón, manga, cartas TCG y los mejores juegos de mesa
-                  del mundo.
-                </p>
-                <div class="hero-actions-row">
-                  <a href="#productosInicioSection" class="btn-primary">
-                    <i class="fas fa-shopping-bag"></i> Explorar Catálogo
-                  </a>
-                  <button class="btn-secondary" onclick="window.AkibaApp.setHomeCategoryFilter('ofertas')">
-                    <i class="fas fa-tags"></i> Ver Ofertas Especiales
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 2: FIGURAS ANIME -->
-          <div class="hero-carousel-slide" data-slide="1">
-            <img src="img/products/figure-luffy-gear5.jpg" alt="Figuras Anime Originales de Japón"
-              class="hero-slide-bg">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-container">
-              <div class="hero-slide-content">
-                <span class="hero-pill-badge">
-                  <i class="fas fa-fire"></i> Importación Directa de Japón
-                </span>
-                <h2 class="hero-title">
-                  Figuras de Anime & <span>Escalas</span>
-                </h2>
-                <p class="hero-subtitle">
-                  One Piece, Dragon Ball, Jujutsu Kaisen, Demon Slayer y Nendoroids con sellos de autenticidad Toei y
-                  Good Smile.
-                </p>
-                <div class="hero-actions-row">
-                  <button class="btn-primary" onclick="window.AkibaApp.setHomeCategoryFilter('figuras')">
-                    <i class="fas fa-cubes"></i> Ver Figuras en Stock
-                  </button>
-                  <button class="btn-secondary" onclick="window.AkibaApp.setHomeCategoryFilter('anime')">
-                    <i class="fas fa-book-open"></i> Ver Mangas Oficiales
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 3: JUEGOS DE MESA & TCG -->
-          <div class="hero-carousel-slide" data-slide="2">
-            <img src="https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=1200&auto=format&fit=crop&q=80"
-              alt="Juegos de Mesa y Estrategia" class="hero-slide-bg">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-container">
-              <div class="hero-slide-content">
-                <span class="hero-pill-badge">
-                  <i class="fas fa-dice"></i> Estrategia, Familia y Amigos
-                </span>
-                <h2 class="hero-title">
-                  Juegos de Mesa & <span>Cartas TCG</span>
-                </h2>
-                <p class="hero-subtitle">
-                  Catan, Carcassonne, Dixit, Virus!, sobres Pokémon TCG y dados de rol listos para tus mejores partidas.
-                </p>
-                <div class="hero-actions-row">
-                  <button class="btn-primary" onclick="window.AkibaApp.setHomeCategoryFilter('juegos-mesa')">
-                    <i class="fas fa-dice"></i> Ver Juegos de Mesa
-                  </button>
-                  <button class="btn-secondary" onclick="window.AkibaApp.setHomeCategoryFilter('juegos-cartas')">
-                    <i class="fas fa-clone"></i> Ver Cartas TCG
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SLIDE 4: OFERTAS -->
-          <div class="hero-carousel-slide" data-slide="3">
-            <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80"
-              alt="Ofertas y Descuentos Sebitas Toys" class="hero-slide-bg">
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-container">
-              <div class="hero-slide-content">
-                <span class="hero-pill-badge" style="background: rgba(184, 58, 36, 0.45); border-color: #E27159;">
-                  <i class="fas fa-percent"></i> Descuentos por Tiempo Limitado
-                </span>
-                <h2 class="hero-title">
-                  Ofertas & Precios <span>Especiales</span>
-                </h2>
-                <p class="hero-subtitle">
-                  Ahorra hasta un 20% en figuras seleccionadas, tomos de manga y juegos de mesa populares.
-                </p>
-                <div class="hero-actions-row">
-                  <button class="btn-primary" onclick="window.AkibaApp.setHomeCategoryFilter('ofertas')">
-                    <i class="fas fa-tags"></i> Ver Todas las Ofertas
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- BOTONES DE NAVEGACIÓN ANTERIOR / SIGUIENTE -->
-        <button class="carousel-arrow prev-arrow" id="heroPrevBtn" aria-label="Slide anterior">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="carousel-arrow next-arrow" id="heroNextBtn" aria-label="Slide siguiente">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-
-        <!-- PUNTOS INDICADORES (DOTS) -->
-        <div class="carousel-dots-wrap" id="heroCarouselDots">
-          <button class="carousel-dot active" data-index="0" aria-label="Slide 1"></button>
-          <button class="carousel-dot" data-index="1" aria-label="Slide 2"></button>
-          <button class="carousel-dot" data-index="2" aria-label="Slide 3"></button>
-          <button class="carousel-dot" data-index="3" aria-label="Slide 4"></button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- VALUE / TRUST PROPOSITION BAR -->
-    <section class="features-bar-section">
-      <div class="container">
-        <div class="features-bar-grid">
-          <div class="feature-item">
-            <div class="feature-icon-box"><i class="fas fa-truck-fast"></i></div>
-            <div class="feature-text">
-              <h4>Envíos a toda Bolivia</h4>
-              <p>Entregas en La Paz y despachos diarios seguros a todo el país.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon-box"><i class="fas fa-certificate"></i></div>
-            <div class="feature-text">
-              <h4>100% Originales</h4>
-              <p>Productos oficiales con sellos de Japón y distribuidoras certificadas.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon-box"><i class="fab fa-whatsapp"></i></div>
-            <div class="feature-text">
-              <h4>Atención por WhatsApp</h4>
-              <p>Atención directa y pedidos al número <strong>77227645</strong>.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon-box"><i class="fas fa-box"></i></div>
-            <div class="feature-text">
-              <h4>Empaque para Coleccionistas</h4>
-              <p>Cajas protegidas con burbuja reforzada para vitrinas impecables.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= DIRECTO A LOS PRODUCTOS CON TABS RÁPIDOS ================= -->
-    <section class="section-wrap" id="productosInicioSection">
-      <div class="container">
-        <div class="section-header" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
-          <div class="section-title-wrap">
-            <h2>Nuestros Productos</h2>
-            <p>Explora todo nuestro catálogo disponible para entrega inmediata y envíos</p>
-          </div>
-
-          <!-- TABS DE CATEGORÍAS RÁPIDAS -->
-          <div class="home-products-filter-tabs" id="homeCategoryTabs">
-            <button class="home-tab-pill active" data-category="all"><i class="fas fa-border-all"></i> Todos</button>
-            <button class="home-tab-pill" data-category="figuras"><i class="fas fa-cubes"></i> Figuras</button>
-            <button class="home-tab-pill" data-category="anime"><i class="fas fa-book-open"></i> Anime & Manga</button>
-            <button class="home-tab-pill" data-category="juegos-mesa"><i class="fas fa-dice"></i> Juegos de
-              Mesa</button>
-            <button class="home-tab-pill" data-category="juegos-cartas"><i class="fas fa-clone"></i> Cartas TCG</button>
-            <button class="home-tab-pill" data-category="coleccionables"><i class="fas fa-gem"></i>
-              Coleccionables</button>
-            <button class="home-tab-pill" data-category="accesorios"><i class="fas fa-ring"></i> Accesorios</button>
-            <button class="home-tab-pill tab-deal" data-category="ofertas"><i class="fas fa-percent"></i>
-              Ofertas</button>
-          </div>
-        </div>
-
-        <!-- CUADRÍCULA PRINCIPAL DIRECTA DE PRODUCTOS -->
-        <div class="products-grid" id="homeMainProductsGrid">
-          <!-- Renderizado dinámico inmediato -->
-        </div>
-
-        <div style="text-align: center; margin-top: 2.25rem;">
-          <button class="btn-primary" onclick="window.AkibaApp.showView('catalog')"
-            style="padding: 0.95rem 2.25rem; font-size: 1rem;">
-            <i class="fas fa-th-large"></i> Ver Catálogo Completo con Filtros Avanzados
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- CATEGORÍAS VISUALES -->
-    <section class="section-wrap" id="categoriasSection"
-      style="background-color: var(--bg-subtle); border-radius: var(--radius-xl); padding: 2.5rem 0;">
+    <section class="section-wrap games-section" id="productosInicioSection" aria-labelledby="gamesTitle">
       <div class="container">
         <div class="section-header">
-          <div class="section-title-wrap">
-            <h2>Explorar por Categorías</h2>
-            <p>Secciones especializadas de figuras, coleccionismo y juegos</p>
+          <div class="section-title-wrap"><span class="section-kicker">QUE EMPIECE LA PARTIDA</span><h2 id="gamesTitle">Juegos para tu mesa</h2></div>
+          <div class="home-products-filter-tabs" id="homeCategoryTabs" aria-label="Tipos de juegos">
+            <button class="home-tab-pill active" data-category="juegos" aria-pressed="true">Todos</button>
+            <button class="home-tab-pill" data-category="juegos-mesa" aria-pressed="false">De mesa</button>
+            <button class="home-tab-pill" data-category="juegos-cartas" aria-pressed="false">Cartas y TCG</button>
           </div>
-          <a href="javascript:void(0)" class="section-link" onclick="window.AkibaApp.showView('catalog')">
-            Ver todas <i class="fas fa-chevron-right"></i>
-          </a>
         </div>
-
-        <div class="categories-grid" id="categoriesGrid">
-          <!-- Renderizado dinámico desde products-data.js -->
-        </div>
+        <div class="products-grid" id="homeMainProductsGrid"></div>
       </div>
     </section>
-
-    <!-- PRODUCTOS DESTACADOS -->
-    <section class="section-wrap" id="destacadosSection">
+    <section class="section-wrap anime-section" id="animeSection" aria-labelledby="animeTitle">
       <div class="container">
         <div class="section-header">
-          <div class="section-title-wrap">
-            <h2>Productos Destacados</h2>
-            <p>Las figuras más aclamadas y los juegos de mesa esenciales para tu colección</p>
-          </div>
-          <a href="javascript:void(0)" class="section-link" onclick="window.AkibaApp.showView('catalog')">
-            Ver catálogo completo <i class="fas fa-chevron-right"></i>
-          </a>
+          <div class="section-title-wrap"><span class="section-kicker">TU OTRO UNIVERSO</span><h2 id="animeTitle">Anime y coleccionables</h2></div>
+          <button class="section-link" onclick="window.AkibaApp.setCatalogCategory('all')">Ver catálogo <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
         </div>
-
-        <div class="products-grid" id="featuredProductsGrid">
-          <!-- Renderizado dinámico de Productos Destacados -->
-        </div>
+        <div class="products-grid" id="animeProductsGrid"></div>
       </div>
     </section>
-
-    <!-- NUEVOS PRODUCTOS -->
-    <section class="section-wrap" id="novedadesSection">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <h2>Nuevos Productos</h2>
-            <p>Últimos lanzamientos y reposiciones recién llegadas de Japón</p>
-          </div>
-          <a href="javascript:void(0)" class="section-link" onclick="window.AkibaApp.showView('catalog')">
-            Explorar novedades <i class="fas fa-chevron-right"></i>
-          </a>
-        </div>
-
-        <div class="products-grid" id="newArrivalsGrid">
-          <!-- Renderizado dinámico de Novedades -->
-        </div>
-      </div>
-    </section>
-
-    <!-- SECCIÓN DE OFERTAS -->
-    <section class="section-wrap" id="ofertasSection"
-      style="background-color: var(--bg-subtle); border-radius: var(--radius-xl); margin-bottom: 3rem;">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <h2>Ofertas y Descuentos Especiales</h2>
-            <p>Precios rebajados por tiempo limitado en figuras seleccionadas y juegos</p>
-          </div>
-          <a href="javascript:void(0)" class="section-link" onclick="window.AkibaApp.setCatalogCategory('ofertas')">
-            Ver todas las ofertas <i class="fas fa-chevron-right"></i>
-          </a>
-        </div>
-
-        <div class="products-grid" id="dealsGrid">
-          <!-- Renderizado dinámico de Ofertas -->
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <!-- ================= VISTA: CATÁLOGO COMPLETO ================= -->
@@ -507,6 +205,23 @@
                 placeholder="Nombre, anime, juego...">
               <button class="clear-input-btn" id="clearSearchBtn" aria-label="Borrar búsqueda">&times;</button>
             </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-title" for="playerCountFilter">Número de jugadores</label>
+            <select id="playerCountFilter" class="select-control">
+              <option value="all">Cualquier cantidad</option>
+              <option value="2">2 jugadores</option>
+              <option value="3">3 jugadores</option>
+              <option value="4">4 jugadores</option>
+              <option value="5">5 jugadores</option>
+              <option value="6">6 jugadores</option>
+              <option value="7">7 jugadores</option>
+              <option value="8">8 jugadores</option>
+              <option value="9">9 jugadores</option>
+              <option value="10">10 jugadores</option>
+            </select>
+            <p class="filter-help">Juegos que admiten esa cantidad, según su ficha.</p>
           </div>
 
           <!-- Franquicia -->
@@ -551,7 +266,7 @@
         <div class="catalog-main-content">
 
           <div class="catalog-content-header">
-            <span class="catalog-stats" id="catalogResultsCount">Mostrando productos...</span>
+            <span class="catalog-stats" id="catalogResultsCount" role="status" aria-live="polite" aria-atomic="true">Mostrando productos...</span>
 
             <div class="catalog-sort-box">
               <label for="catalogSortSelect">Ordenar por:</label>
@@ -579,7 +294,7 @@
             <i class="fas fa-box-open"></i>
             <h3>No encontramos productos con estos filtros</h3>
             <p>Intenta ajustar el rango de precio, cambiar la franquicia o borrar el término de búsqueda.</p>
-            <button class="btn-outline" onclick="window.AkibaApp.showView('catalog')">Ver Todos los Productos</button>
+            <button class="btn-outline" onclick="window.AkibaApp.clearAllFilters()">Ver Todos los Productos</button>
           </div>
 
         </div>
@@ -1170,6 +885,11 @@
 
       </div>
 
+      <div class="footer-service-notes" aria-label="Información de la tienda">
+        <span><i class="fas fa-truck" aria-hidden="true"></i> Envíos a toda Bolivia</span>
+        <span><i class="fas fa-certificate" aria-hidden="true"></i> Productos originales</span>
+        <span><i class="fas fa-box" aria-hidden="true"></i> Empaque para coleccionistas</span>
+      </div>
       <!-- Footer Bottom -->
       <div class="footer-bottom">
         <div>
