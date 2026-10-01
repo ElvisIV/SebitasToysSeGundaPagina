@@ -190,6 +190,9 @@
     renderCatalog();
     populateProfileForm();
     bindEvents();
+    window.addEventListener('scroll', () => {
+      document.body.classList.toggle('search-scrolled', window.scrollY > 80);
+    }, { passive: true });
     updateCartUI();
     updateFavoritesUI();
     renderOrdersList();
@@ -553,6 +556,8 @@
           ${isGame(p) ? `<div class="game-facts">
             ${playerRange(p) ? `<span><i class="fas fa-user-friends" aria-hidden="true"></i> ${playerRange(p).join('–')} jugadores</span>` : '<span>Cartas coleccionables</span>'}
             ${p.specs?.['Duración'] ? `<span><i class="far fa-clock" aria-hidden="true"></i> ${p.specs['Duración'].replace('minutos', 'min')}</span>` : ''}
+            ${p.specs?.['Edad'] ? `<span><i class="fas fa-child" aria-hidden="true"></i> ${escapeHTML(p.specs['Edad'])}</span>` : ''}
+            ${typeof p.stock === 'number' ? `<span><i class="fas fa-box" aria-hidden="true"></i> Stock: ${p.stock}</span>` : ''}
           </div>` : ''}
 
           <div class="product-card-bottom">
@@ -565,9 +570,11 @@
               ` : ''}
             </div>
 
-            <button class="btn-add-to-cart" data-id="${p.id}" aria-label="Agregar ${p.name} al carrito">
-              <i class="fas fa-shopping-bag"></i> Agregar
-            </button>
+            <div class="product-card-actions">
+              <button class="card-action card-view-btn" data-id="${p.id}" aria-label="Ver ${p.name}"><i class="fas fa-eye" aria-hidden="true"></i></button>
+              <button class="card-action btn-add-to-cart" data-id="${p.id}" aria-label="Agregar ${p.name} al carrito"><i class="fas fa-shopping-cart" aria-hidden="true"></i></button>
+              <button class="card-action card-share-btn" data-id="${p.id}" aria-label="Compartir ${p.name}"><i class="fas fa-share-alt" aria-hidden="true"></i></button>
+            </div>
           </div>
         </div>
       </article>
@@ -587,6 +594,8 @@
       const quickViewBtn = card.querySelector('.product-quick-view-btn');
       const favBtn = card.querySelector('.product-fav-btn');
       const addCartBtn = card.querySelector('.btn-add-to-cart');
+      const viewBtn = card.querySelector('.card-view-btn');
+      const shareBtn = card.querySelector('.card-share-btn');
 
       [media, titleLink, quickViewBtn].forEach(el => {
         if (el) {
@@ -595,6 +604,16 @@
             openProductDetailModal(product);
           });
         }
+      });
+
+      if (viewBtn) viewBtn.addEventListener('click', (e) => { e.stopPropagation(); openProductDetailModal(product); });
+      if (shareBtn) shareBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const shareData = { title: product.name, text: `Mira ${product.name} en Sebitas Toys`, url: `${location.origin}${location.pathname}?product=${encodeURIComponent(product.id)}` };
+        try {
+          if (navigator.share) await navigator.share(shareData);
+          else { await navigator.clipboard.writeText(shareData.url); showToast('Enlace copiado para compartir', 'success'); }
+        } catch (_) { /* User cancelled the native share sheet. */ }
       });
 
       if (favBtn) {

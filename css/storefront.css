@@ -138,3 +138,59 @@
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .product-card:hover, .product-card:focus-within { transform: none; }
 }
+
+/* Reference-inspired visual layer: one continuous navy navigation/search bar. */
+body { background: #031a2d; }
+.main-header, .discovery-bar { background: #031a2d; color: #f4f7fb; border-color: #17466b; }
+.main-header { box-shadow: 0 1px 0 #2b8bc055; }
+.main-header .brand-name, .main-header .nav-link, .main-header .action-btn { color: #f4f7fb; }
+.main-header .nav-link:hover, .main-header .action-btn:hover { color: #86e52b; }
+.discovery-bar { padding: 12px 0; box-shadow: 0 10px 24px #00101fcc; }
+.discovery-bar::after { content: ''; position: absolute; inset: auto 0 0; height: 2px; background: linear-gradient(90deg, transparent, #75d92a, #0794e8, transparent); opacity: .75; }
+.search-scrolled .discovery-bar { box-shadow: 0 0 0 1px #7ce12f, 0 0 26px #39d8ff99, 0 12px 28px #00101fcc; }
+.search-scrolled .store-search { border-color: #7ce12f; box-shadow: 0 0 0 2px #7ce12f66, 0 0 20px #21baffaa; }
+.browse-button { background: linear-gradient(135deg, #0e4970, #06263e); border: 1px solid #32a8ec; }
+.store-search { border-color: #4a91b6; background: #f6f8f4; }
+.search-submit { background: #ae3827; }
+.discovery-cart { color: #b9ed43; }
+.store-intro { position: relative; max-width: none; min-height: 525px; padding-left: max(20px, calc((100% - 1260px) / 2 + 20px)); padding-right: max(20px, calc((100% - 1260px) / 2 + 20px)); background: linear-gradient(90deg, #001224e8 0%, #001224b8 35%, #00122433 72%), url('../img/hero-games-night.png') center 58% / cover no-repeat; color: #fff; }
+.store-intro::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #00122477, transparent 65%); pointer-events: none; }
+.intro-copy, .intro-art { position: relative; z-index: 1; }
+.intro-copy h1 { text-shadow: 0 3px 16px #000; }
+.intro-eyebrow { color: #91e23d; }
+.intro-link { color: #fff; border-bottom: 1px solid #8fe534; padding-bottom: 6px; }
+.intro-art { opacity: .45; }
+.games-section, .anime-section { background: #041f35; color: #fff; }
+.anime-section { background: #03182a; }
+.section-title-wrap h2 { color: #fff; }
+.section-kicker { color: #8fe534; }
+.home-tab-pill { color: #dcecf4; border-color: #276184; background: #062b46; }
+.home-tab-pill.active { background: #6fce23; border-color: #a4f15a; color: #092033; }
+.product-card { background: #03182a; border-color: #42a5d5; box-shadow: 4px 4px 0 #6ed329; color: #f4f7fb; }
+.product-card:hover, .product-card:focus-within { border-color: #9ce93a; box-shadow: 6px 7px 0 #2ab7ed; }
+.product-card-media { border-color: #237ca6; background: #001426; }
+.product-card-body { background: #03182a; }
+.product-category-tag, .game-facts { color: #a8d3df; }
+.game-facts span { background: #082b40; border: 1px solid #1d7192; border-radius: 3px; padding: 4px 6px; }
+.product-card-title a { color: #fff; }
+.product-card .current-price { color: #91e23d; }
+.product-card .old-price { color: #8ca2ad; }
+.product-card-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.card-action { min-height: 38px; border: 1px solid #78d52b; border-radius: 0; color: #8fe534; background: #06243a; }
+.card-action:hover, .card-action:focus-visible { color: #fff; background: #6fce23; border-color: #b9fa69; }
+.card-view-btn { border-color: #f1d52b; color: #f1d52b; }
+.card-share-btn { border-color: #55b6f0; color: #55b6f0; }
+.product-fav-btn { background: #03182a; color: #9de63e; border-color: #4da6c8; }
+.product-card-badges .badge-deal { background: #b93629; color: #fff; }
+.footer-service-notes, .main-footer { background: #021321; }
+.catalog-section, .checkout-section { background: #041f35; color: #fff; }
+.filters-sidebar, .catalog-main-content { color: #fff; }
+.catalog-header-bar, .filters-sidebar { background: #06263c; border-color: #1b628a; }
+.filter-title, .catalog-stats, .catalog-content-header label { color: #d8edf6; }
+.form-control-input, .select-control, #catalogSortSelect { background: #f7faf8; }
+@media (max-width: 700px) {
+  .store-intro { min-height: 390px; padding-left: 16px; padding-right: 16px; background-position: 60% center; }
+  .intro-copy h1 { color: #fff; }
+  .intro-art { opacity: .28; }
+  .discovery-bar { padding: 10px 0; }
+}
