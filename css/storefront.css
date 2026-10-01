@@ -126,6 +126,52 @@
   .product-quick-view-btn { display: none; }
   .filter-help { max-width: 260px; }
 }
+
+/* Paleta original de Sebitas Toys: marfil, carbón y terracota. */
+body { background: var(--bg-body); color: var(--text-main); }
+.main-header, .discovery-bar { background: var(--bg-body); color: var(--text-main); border-color: var(--bg-muted); }
+.main-header { box-shadow: 0 1px 0 rgba(28, 29, 33, .08); }
+.main-header .brand-name, .main-header .nav-link, .main-header .action-btn { color: var(--text-main); }
+.main-header .nav-link:hover, .main-header .action-btn:hover { color: var(--color-accent); }
+.discovery-bar { box-shadow: 0 8px 20px rgba(28, 29, 33, .08); }
+.discovery-bar::after { background: linear-gradient(90deg, transparent, var(--color-accent-border), var(--color-accent), transparent); }
+.search-scrolled .discovery-bar { box-shadow: 0 0 0 1px var(--color-accent-border), 0 0 22px rgba(184, 58, 36, .35), 0 10px 24px rgba(28, 29, 33, .12); }
+.search-scrolled .store-search { border-color: var(--color-accent); box-shadow: 0 0 0 2px rgba(184, 58, 36, .20), 0 0 20px rgba(184, 58, 36, .28); }
+.browse-button { background: var(--text-main); color: #fff; border-color: var(--text-main); }
+.store-search { border-color: var(--text-main); background: #fff; }
+.store-search:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(184, 58, 36, .14); }
+.search-submit { background: var(--color-accent); }
+.discovery-cart { color: var(--color-accent); }
+.games-section, .anime-section { background: var(--bg-body); color: var(--text-main); }
+.anime-section { background: var(--bg-subtle); }
+.section-title-wrap h2 { color: var(--text-main); }
+.section-kicker, .intro-eyebrow { color: var(--color-accent); }
+.home-tab-pill { color: var(--text-main); border-color: var(--bg-muted); background: #fff; }
+.home-tab-pill.active { background: var(--text-main); border-color: var(--text-main); color: #fff; }
+.product-card { background: var(--bg-surface); border-color: var(--text-main); box-shadow: 4px 4px 0 var(--color-accent); color: var(--text-main); }
+.product-card:hover, .product-card:focus-within { border-color: var(--color-accent); box-shadow: 6px 7px 0 var(--color-accent); }
+.product-card-media { border-color: var(--text-main); background: var(--bg-subtle); }
+.product-card-body { background: var(--bg-surface); }
+.product-category-tag, .game-facts { color: var(--text-secondary); }
+.game-facts span { background: var(--color-accent-light); border-color: var(--color-accent-border); }
+.product-card-title a { color: var(--text-main); }
+.product-card .current-price { color: var(--color-accent); }
+.product-card .old-price { color: var(--text-muted); }
+.card-action { border-color: var(--color-accent); color: var(--color-accent); background: #fff; }
+.card-action:hover, .card-action:focus-visible { color: #fff; background: var(--color-accent); border-color: var(--color-accent-hover); }
+.card-view-btn { border-color: #d3a900; color: #aa8500; }
+.card-share-btn { border-color: #3385c6; color: #3385c6; }
+.product-fav-btn { background: #fff; color: var(--color-accent); border-color: var(--bg-muted); }
+.product-card-badges .badge-deal { background: var(--color-accent); color: #fff; }
+.catalog-section, .checkout-section { background: var(--bg-body); color: var(--text-main); }
+.catalog-header-bar, .filters-sidebar { background: #fff; border-color: var(--bg-muted); }
+.filters-sidebar, .catalog-main-content { color: var(--text-main); }
+.filter-title, .catalog-stats, .catalog-content-header label { color: var(--text-main); }
+.footer-service-notes, .main-footer { background: #1f2024; }
+.intro-copy h1, .intro-copy .intro-link { color: #fff; }
+@media (max-width: 700px) {
+  .store-intro { background: linear-gradient(90deg, rgba(28,29,33,.80), rgba(28,29,33,.20)), url('../img/hero-games-night.png') center / cover no-repeat; }
+}
 @media (max-width: 380px) {
   .intro-copy h1 { font-size: 32px; }
   .intro-art { scale: .8; transform-origin: left center; width: 145px; }
@@ -194,3 +240,45 @@ body { background: #031a2d; }
   .intro-art { opacity: .28; }
   .discovery-bar { padding: 10px 0; }
 }
+
+/* Final palette override: keep the original Sebitas Toys colors. */
+body { background: var(--bg-body); color: var(--text-main); }
+.main-header, .discovery-bar { background: var(--bg-body); color: var(--text-main); border-color: var(--bg-muted); }
+.main-header { box-shadow: 0 1px 0 rgba(28,29,33,.08); }
+.main-header .brand-name, .main-header .nav-link, .main-header .action-btn { color: var(--text-main); }
+.main-header .nav-link:hover, .main-header .action-btn:hover { color: var(--color-accent); }
+.discovery-bar { box-shadow: 0 8px 20px rgba(28,29,33,.08); }
+.discovery-bar::after { background: linear-gradient(90deg, transparent, var(--color-accent-border), var(--color-accent), transparent); }
+.search-scrolled .discovery-bar { box-shadow: 0 0 0 1px var(--color-accent-border), 0 0 22px rgba(184,58,36,.35), 0 10px 24px rgba(28,29,33,.12); }
+.search-scrolled .store-search { border-color: var(--color-accent); box-shadow: 0 0 0 2px rgba(184,58,36,.20), 0 0 20px rgba(184,58,36,.28); }
+.browse-button { background: var(--text-main); border-color: var(--text-main); }
+.store-search { border-color: var(--text-main); background: #fff; }
+.store-search:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(184,58,36,.14); }
+.search-submit { background: var(--color-accent); }
+.discovery-cart { color: var(--color-accent); }
+.games-section, .anime-section { background: var(--bg-body); color: var(--text-main); }
+.anime-section { background: var(--bg-subtle); }
+.section-title-wrap h2 { color: var(--text-main); }
+.section-kicker, .intro-eyebrow { color: var(--color-accent); }
+.home-tab-pill { color: var(--text-main); border-color: var(--bg-muted); background: #fff; }
+.home-tab-pill.active { background: var(--text-main); border-color: var(--text-main); color: #fff; }
+.product-card { background: var(--bg-surface); border-color: var(--text-main); box-shadow: 4px 4px 0 var(--color-accent); color: var(--text-main); }
+.product-card:hover, .product-card:focus-within { border-color: var(--color-accent); box-shadow: 6px 7px 0 var(--color-accent); }
+.product-card-media { border-color: var(--text-main); background: var(--bg-subtle); }
+.product-card-body { background: var(--bg-surface); }
+.product-category-tag, .game-facts { color: var(--text-secondary); }
+.game-facts span { background: var(--color-accent-light); border-color: var(--color-accent-border); }
+.product-card-title a { color: var(--text-main); }
+.product-card .current-price { color: var(--color-accent); }
+.product-card .old-price { color: var(--text-muted); }
+.card-action { border-color: var(--color-accent); color: var(--color-accent); background: #fff; }
+.card-action:hover, .card-action:focus-visible { color: #fff; background: var(--color-accent); border-color: var(--color-accent-hover); }
+.card-view-btn { border-color: #d3a900; color: #aa8500; }
+.card-share-btn { border-color: #3385c6; color: #3385c6; }
+.product-fav-btn { background: #fff; color: var(--color-accent); border-color: var(--bg-muted); }
+.product-card-badges .badge-deal { background: var(--color-accent); color: #fff; }
+.catalog-section, .checkout-section { background: var(--bg-body); color: var(--text-main); }
+.catalog-header-bar, .filters-sidebar { background: #fff; border-color: var(--bg-muted); }
+.filters-sidebar, .catalog-main-content { color: var(--text-main); }
+.filter-title, .catalog-stats, .catalog-content-header label { color: var(--text-main); }
+.footer-service-notes, .main-footer { background: #1f2024; }
