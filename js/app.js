@@ -197,6 +197,17 @@
     updateFavoritesUI();
     renderOrdersList();
     syncSearchInputs();
+    initSplash();
+  }
+
+  function initSplash() {
+    const splash = document.getElementById('storeSplash');
+    if (!splash) return;
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 450 : 1450;
+    window.setTimeout(() => {
+      splash.classList.add('is-leaving');
+      window.setTimeout(() => splash.remove(), 520);
+    }, delay);
   }
 
   /* ================= HERO CAROUSEL ENGINE ================= */

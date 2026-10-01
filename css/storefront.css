@@ -169,6 +169,84 @@ body { background: var(--bg-body); color: var(--text-main); }
 .filter-title, .catalog-stats, .catalog-content-header label { color: var(--text-main); }
 .footer-service-notes, .main-footer { background: #1f2024; }
 .intro-copy h1, .intro-copy .intro-link { color: #fff; }
+
+/* Splash de entrada: breve, visible y sin bloquear la navegación. */
+.store-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--bg-body);
+  isolation: isolate;
+  animation: splash-background-in .45s ease-out both;
+}
+.store-splash-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  animation: splash-card-in .8s cubic-bezier(.16,1,.3,1) both;
+}
+.store-splash-logo {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  animation: splash-logo-pop 1.15s cubic-bezier(.16,1,.3,1) both;
+}
+.store-splash-name {
+  color: var(--text-main);
+  font: 800 clamp(1.7rem, 4vw, 2.35rem)/1 var(--font-heading);
+  letter-spacing: -.04em;
+}
+.store-splash-name span { color: var(--color-accent); }
+.store-splash-card p {
+  color: var(--text-secondary);
+  font-size: .73rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.store-splash-loader {
+  width: 112px;
+  height: 3px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--color-accent-border);
+}
+.store-splash-loader span {
+  display: block;
+  width: 42%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-accent);
+  animation: splash-loader 1.3s ease-in-out infinite;
+}
+.store-splash-orbit {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid var(--color-accent-border);
+  border-radius: 50%;
+  opacity: .7;
+}
+.store-splash-orbit-one { width: 390px; height: 170px; transform: rotate(-26deg); animation: splash-orbit-one 1.6s ease-out both; }
+.store-splash-orbit-two { width: 250px; height: 470px; transform: rotate(26deg); animation: splash-orbit-two 1.6s ease-out both; }
+.store-splash.is-leaving { animation: splash-out .5s ease-in forwards; pointer-events: none; }
+@keyframes splash-background-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes splash-card-in { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes splash-logo-pop { 0% { opacity: 0; transform: scale(.5) rotate(-12deg); } 60% { opacity: 1; transform: scale(1.08) rotate(3deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes splash-loader { 0% { transform: translateX(-130%); } 100% { transform: translateX(330%); } }
+@keyframes splash-orbit-one { from { opacity: 0; transform: rotate(-26deg) scale(.6); } to { opacity: .7; transform: rotate(-26deg) scale(1); } }
+@keyframes splash-orbit-two { from { opacity: 0; transform: rotate(26deg) scale(.6); } to { opacity: .7; transform: rotate(26deg) scale(1); } }
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  .store-splash, .store-splash-card, .store-splash-logo, .store-splash-orbit, .store-splash-loader span { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  .store-splash.is-leaving { transition: opacity .15s linear; animation: splash-out .15s linear forwards !important; }
+}
 @media (max-width: 700px) {
   .store-intro { background: linear-gradient(90deg, rgba(28,29,33,.80), rgba(28,29,33,.20)), url('../img/hero-games-night.png') center / cover no-repeat; }
 }
